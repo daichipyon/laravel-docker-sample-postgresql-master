@@ -17,7 +17,9 @@ Route::get('/', function () {
 
 Route::get('/hello', 'HelloController@hello');
 
-Route::get('/user', 'UserController@index');
-
 Route::get('/bbs', 'BbsController@index');
 Route::post('/bbs', 'BbsController@create');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/upload', 'HomeController@upload');
