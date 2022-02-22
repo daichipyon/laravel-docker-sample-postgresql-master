@@ -26,45 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
-    }
+        $posts = Post::all();
 
-        /**
-     * ファイルアップロード処理
-     */
-    public function upload(Request $request)
-    {
-        $this->validate($request, [
-            'file' => [
-                // 必須
-                'required',
-                // アップロードされたファイルであること
-                'file',
-                // 画像ファイルであること
-                'image',
-                // MIMEタイプを指定
-                'mimes:jpeg,png',
-            ]
-        ]);
-        $user_id = Auth::id();
-        $path = $request->file->store('public');
-        $filename = basename($path);
-
-        $comment = $request->input('comment');
-
-        Post::insert(['user_id' => $user_id, 'filename' => $filename,'comment'=>$comment]);
-
-        if ($request->file('file')->isValid([])) {
-            return view('home')->with([
-                'filename'=> basename($path),
-                'comment' => $comment,
-                'user_id' => $user_id,
-            ]);
-        } else {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors();
-        }
+        return view('home',["posts" => $posts]);
     }
 }

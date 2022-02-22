@@ -31,25 +31,12 @@
 </ul>
 @endif
 
-<!-- フォーム -->
-<form action="{{ url('upload') }}" method="POST" enctype="multipart/form-data">
-
-    <!-- アップロードした画像。なければ表示しない -->
-    @isset ($filename)
-    <div>
-        <img src="{{ asset('storage/' . $filename) }}">
-    </div>{{$comment}}<div>
-    </div>{{$user_id}}<div>
-    </div>
-    @endisset
-
-    <label for="photo">画像ファイル:</label>
-    <input type="file" class="form-control" name="file">
-    コメント:<br>
-    <input name="comment">
-    <br>
-    <br>
-    <hr>
-    {{ csrf_field() }}
-    <button class="btn btn-success"> Upload </button>
-</form>
+<!-- 投稿表示エリア（編集するのはここ！） -->
+@isset($posts)
+@foreach ($posts as $post)
+    <h2>{{ $post->comment }}</h2>
+    <h2>{{ $post->user->name }}</h2>
+    <div><img src="{{ asset('storage/' . $post->filename) }}" width=400></div>
+    <br><hr>
+@endforeach
+@endisset

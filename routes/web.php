@@ -22,7 +22,11 @@ Route::post('/bbs', 'BbsController@create');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::post('/upload', 'HomeController@upload');
 
 Route::get('/addthumb', 'AddthumbController@index');
 Route::post('/addthumb', 'AddthumbController@thumbUpdate');
+
+Route::get('/addpost','PostController@postaddPage');
+Route::post('/addpost', 'PostController@postAdd');
+
+Route::post('like/{post_id}',)
