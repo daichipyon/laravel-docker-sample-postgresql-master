@@ -23,3 +23,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/upload', 'HomeController@upload');
+
+Route::get('/addthumb', 'AddthumbController@index');
+Route::post('/addthumb', 'AddthumbController@thumbUpdate');

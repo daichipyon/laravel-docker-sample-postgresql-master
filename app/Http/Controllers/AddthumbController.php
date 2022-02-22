@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Model\Post;
 
 
-class HomeController extends Controller
+class AddthumbController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -20,20 +20,21 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show add thumbnail page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('home');
+        return view('addthumb');
     }
 
-        /**
-     * ファイルアップロード処理
+    /**
+     *ファイルアップロード処理
+     *
+     * @return void
      */
-    public function upload(Request $request)
-    {
+    public function thumbUpdate(Request $request){
         $this->validate($request, [
             'file' => [
                 // 必須
@@ -46,25 +47,14 @@ class HomeController extends Controller
                 'mimes:jpeg,png',
             ]
         ]);
-        $user_id = Auth::id();
+        $user = Auth::user();
+
         $path = $request->file->store('public');
         $filename = basename($path);
 
-        $comment = $request->input('comment');
+        $user->filename = $filename;
+        $user->save();
 
-        Post::insert(['user_id' => $user_id, 'filename' => $filename,'comment'=>$comment]);
-
-        if ($request->file('file')->isValid([])) {
-            return view('home')->with([
-                'filename'=> basename($path),
-                'comment' => $comment,
-                'user_id' => $user_id,
-            ]);
-        } else {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->withErrors();
-        }
+        return view('home');
     }
 }
