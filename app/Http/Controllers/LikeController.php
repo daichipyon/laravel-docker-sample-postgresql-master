@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Model\Like;
+use App\Model\Post;
 
 
 class LikeController extends Controller
@@ -18,7 +18,17 @@ class LikeController extends Controller
     {
         $this->middleware('auth');
     }
+
+    /**
+     * likeしたユーザーの一覧を表示する
+     */
+    public function index($post_id)
+    {
+        $users = Post::find($post_id)->likes;
+        return view('likes',['users' => $users]);
+    }
     
+
     /**
      * likeを追加する
      */

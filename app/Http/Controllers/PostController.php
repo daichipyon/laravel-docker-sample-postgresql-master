@@ -32,7 +32,11 @@ class PostController extends Controller
 
     public function postaddPage()
     {
-        return view('addPosts');
+        if(Auth::check()){
+            return redirect('login');
+        }else{
+            return view('addPosts');
+        }
     }
 
     /**

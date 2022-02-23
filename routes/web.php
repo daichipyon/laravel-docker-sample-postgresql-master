@@ -32,3 +32,5 @@ Route::delete('/posts/{post_id}','PostController@postDelete');
 
 Route::post('/likeadd','LikeController@likeAdd');
 Route::delete('/likecancel','LikeController@likeCancel');
+
+Route::get('/likes/{post_id}','LikeController@index');
