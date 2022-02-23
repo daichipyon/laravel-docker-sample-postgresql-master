@@ -1,4 +1,5 @@
 FROM php:7.3-fpm
+COPY php.ini /usr/local/etc/php/
 
 ENV TZ Asia/Tokyo
 ENV COMPOSER_ALLOW_SUPERUSER 1
