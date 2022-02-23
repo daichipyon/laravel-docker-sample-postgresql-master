@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Model\Post;
 
 class User extends Authenticatable
 {
@@ -38,6 +39,34 @@ class User extends Authenticatable
     ];
 
     public function posts(){
-        return $this->hasMany('App\Post','user_id','id');
+        return $this->hasMany('App\Model\Post','user_id','id');
+    }
+
+    public function likes(){
+        return $this->belongsToMany(Post::class,'likes','user_id','post_id')->withTimestamps();
+    }
+
+    public function is_liked($post_id){
+        return $this->likes()->where('post_id',$post_id)->exists();
+    }
+
+    public function addLike($post_id){
+        if($this->is_liked($post_id)){
+            return false;
+        }
+        else{
+            $this->likes()->attach($post_id);
+            return true;
+        }
+    }
+    
+    public function cancelLike($post_id){
+        if($this->is_liked($post_id)){
+            $this->likes()->detach($post_id);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

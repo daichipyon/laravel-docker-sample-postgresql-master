@@ -13,7 +13,7 @@ class Like extends Model
     }
 
     public function user(){
-        return $this->hasOne('App\Model\Post','user_id','id');
+        return $this->belogs('App\Model\User','user_id','id');
 
     }
 }

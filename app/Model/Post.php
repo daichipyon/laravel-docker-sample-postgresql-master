@@ -13,11 +13,16 @@ class Post extends Model
     }
 
     public function likes(){
-        return $this->hasMany('App\Model\Post','post_id','id');
+        return $this->hasMany('App\Model\Like','post_id','id');
     }
 
     public function countlike(){
         return $this->likes()->count();
+    }
+
+    public function deletePost(){
+        $this->delete();
+        return true;
     }
 
 }

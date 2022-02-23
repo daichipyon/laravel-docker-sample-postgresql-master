@@ -29,4 +29,5 @@ Route::post('/addthumb', 'AddthumbController@thumbUpdate');
 Route::get('/addpost','PostController@postaddPage');
 Route::post('/addpost', 'PostController@postAdd');
 
-Route::post('like/{post_id}',)
+Route::post('/likeadd','LikeController@likeAdd');
+Route::delete('/likecancel','LikeController@likeCancel');

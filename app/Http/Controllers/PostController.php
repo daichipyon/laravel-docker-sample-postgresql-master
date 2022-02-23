@@ -34,7 +34,7 @@ class PostController extends Controller
     {
         return view('addpost');
     }
-    
+
     /**
      * ファイルアップロード処理
      */
@@ -57,7 +57,7 @@ class PostController extends Controller
         $filename = basename($path);
 
         $comment = $request->input('comment');
-
+        dd($comment);
         Post::insert(['user_id' => $user_id, 'filename' => $filename,'comment'=>$comment]);
 
         if ($request->file('file')->isValid([])) {
@@ -73,4 +73,6 @@ class PostController extends Controller
                 ->withErrors();
         }
     }
+
+
 }
