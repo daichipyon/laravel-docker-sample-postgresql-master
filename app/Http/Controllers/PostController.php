@@ -32,11 +32,11 @@ class PostController extends Controller
 
     public function postaddPage()
     {
-        return view('addpost');
+        return view('addPosts');
     }
 
     /**
-     * ファイルアップロード処理
+     * 投稿
      */
     public function postAdd(Request $request)
     {
@@ -53,23 +53,34 @@ class PostController extends Controller
             ]
         ]);
         $user_id = Auth::id();
-        $path = $request->file->store('public');
-        $filename = basename($path);
-
+        $filename = basename( $request->file->store('public'));
         $comment = $request->input('comment');
-        Post::insert(['user_id' => $user_id, 'filename' => $filename,'comment'=>$comment]);
+
 
         if ($request->file('file')->isValid([])) {
-            return view('home')->with([
-                'filename'=> basename($path),
-                'comment' => $comment,
-                'user_id' => $user_id,
+            $post = Post::create([
+                "user_id"=>$user_id,
+                "filename"=>$filename,
+                "comment"=>$comment
             ]);
+            return redirect('/home');
+        
         } else {
             return redirect()
                 ->back()
                 ->withInput()
                 ->withErrors();
+        }
+    }
+
+    public function postDelete($post_id){
+        if(Post::find($post_id)->user_id !=Auth::id()){
+            return redirect('home');
+        }else{
+            $post = Post::find($post_id);
+            $post->delete();
+            return redirect('home');
+
         }
     }
 

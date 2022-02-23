@@ -26,8 +26,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/addthumb', 'AddthumbController@index');
 Route::post('/addthumb', 'AddthumbController@thumbUpdate');
 
-Route::get('/addpost','PostController@postaddPage');
-Route::post('/addpost', 'PostController@postAdd');
+Route::get('/posts/new','PostController@postaddPage');
+Route::post('/posts', 'PostController@postAdd');
+Route::delete('/posts/{post_id}','PostController@postDelete');
 
 Route::post('/likeadd','LikeController@likeAdd');
 Route::delete('/likecancel','LikeController@likeCancel');
