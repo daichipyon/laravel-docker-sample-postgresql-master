@@ -26,11 +26,13 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/addthumb', 'AddthumbController@index');
 Route::post('/addthumb', 'AddthumbController@thumbUpdate');
 
-Route::get('/posts/new','PostController@postaddPage');
-Route::post('/posts', 'PostController@postAdd');
-Route::delete('/posts/{post_id}','PostController@postDelete');
+Route::name('post.')->group(function(){
+    Route::get('/posts/new','PostController@postaddPage')->name('new');
+    Route::post('/posts', 'PostController@postAdd')->name('postadd');
+    Route::delete('/posts/{post_id}','PostController@postDelete')->name('delete');    
+});
 
-Route::post('/likeadd','LikeController@likeAdd');
+Route::post('/likeadd','LikeController@likeAdd')->name('likeadd');
 Route::delete('/likecancel','LikeController@likeCancel');
 
 Route::get('/likes/{post_id}','LikeController@index');

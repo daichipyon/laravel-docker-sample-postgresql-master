@@ -47,11 +47,7 @@ class User extends Authenticatable
     }
 
     public function is_liked($post_id){
-        if($this->likes()->where('post_id',$post_id)->exists()){
-            return true;
-        }else{
-            return false;
-        };
+        return $this->likes()->where('post_id',$post_id)->exists();
     }
 
     public function addLike($post_id){

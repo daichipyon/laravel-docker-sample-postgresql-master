@@ -1,11 +1,16 @@
-    <h1>Your mail address is {{$user->email}}</h1>
+@extends('layouts.app')
+
+
+<h1>mail address is {{$user->email}}</h1>
+<!-- 投稿表示エリア（編集するのはここ！） -->
 @isset($posts)
 @foreach ($posts as $post)
 <h2>{{ $post->user->name }}</h2>
 <h2>{{ $post->comment }}</h2>
 <div><img src="{{ asset('storage/' . $post->filename) }}" width=400></div>
 
-@if(Auth::user()->is_liked($post->id))
+<!-- いいねする・取り消す　-->
+@if(Auth::check() and Auth::user()->is_liked($post->id))
     <form action="{{ url('likecancel') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="post_id" value={{$post->id}}>
@@ -20,7 +25,11 @@
     </form>
 @endif
 
-@if(Auth::id()==$post->user_id)
+<!-- いいね数を表示する　-->
+<div>{{$post->countlike()}} </div>
+
+<!-- 記事を削除する　-->
+@if(Auth::check() and Auth::id()==$post->user_id)
     <form action="{{ url('posts/'.$post->id)}}" method="POST">
         @csrf
         <input type="hidden" name="post_id" value={{$post->id}}>
@@ -31,3 +40,34 @@
 <br><hr>
 @endforeach
 @endisset
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
+
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+
+                    You are logged in!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+<!-- エラーメッセージ。なければ表示しない -->
+@if ($errors->any())
+<ul>
+    @foreach($errors->all() as $error)
+    <li>{{ $error }}</li>
+    @endforeach
+</ul>
+@endif

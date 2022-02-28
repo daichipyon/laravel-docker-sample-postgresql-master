@@ -5,8 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('ログイン') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -65,23 +63,15 @@
                             </div>
                         </div>
                         <hr class=>
-                        <div class="form-group row">
-                            <div class="col-md-8 offset-md-4">
-                                <a class="w-100 btn btn-success" href="{{ route('register') }}">
-                                    {{ __('新規登録する') }}
-                                </a>
-                        </div>
-                        </div>
                     </form>
+                <div class="row justify-content-center">
+                    <a class="w-300 btn btn-success" href="{{ route('register') }}">
+                        {{ __('新規登録する') }}
+                    </a>
                 </div>
+            </div>
             </div>
         </div>
     </div>
-    <div class="row justify-content-center">
-    </div>
 </div>
 @endsection
-
-<div>
-    l
-</div>

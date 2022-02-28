@@ -34,9 +34,9 @@ class LikeController extends Controller
      */
     public function likeAdd(Request $request)
     {
-            $user =Auth::user();
-            $user->addLike($request->input('post_id'));
-            return back();
+        $user =Auth::user();
+        $user->addLike($request->input('post_id'));
+        return back();
     }
 
     /**

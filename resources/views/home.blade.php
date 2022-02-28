@@ -1,71 +1,58 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
+    <!-- 投稿表示エリア（編集するのはここ！） -->
+    @isset($posts)
+    @foreach ($posts as $post)
+        <div class="container  my-4">
+            <div class="d-flex justify-content-center">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <h5 class="card-title col-9">{{ $post->user->name }}</h2>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                            <!-- 記事を削除する　-->
+                            <div class="col-3">
+                            @if(Auth::check() and Auth::id()==$post->user_id)
+                                <form action="{{ url('posts/'.$post->id)}}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="post_id" value={{$post->id}}>
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <button>削除する</button>        
+                                </form>
+                            @endif
+                            </div>
                         </div>
-                    @endif
+                        <div><img src="{{ asset('storage/' . $post->filename) }}" width=400></div>
 
-                    You are logged in!
+                        <div class="row">
+                            <div class="col-10">{{ $post->comment }}</div>
+                            <div class="col-2 text-right">
+                                <!-- いいねする・取り消す　-->
+                                @if(Auth::check())
+                                    @if(Auth::user()->is_liked($post->id))
+                                        <form action="{{ url('likecancel') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="post_id" value={{$post->id}}>
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <button>⭐</button>                                        </form>   
+                                    @else
+                                        <form action="{{ url('likeadd') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="post_id" value={{$post->id}}>
+                                            <button>☆</button>        
+                                        </form>
+                                    @endif
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="text-right"><a href="{{route('likeadd').'/'.$post->id}}">いいねしたユーザ</a></div>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+        @endforeach
+    @endisset
 @endsection
-
-<!-- エラーメッセージ。なければ表示しない -->
-@if ($errors->any())
-<ul>
-    @foreach($errors->all() as $error)
-    <li>{{ $error }}</li>
-    @endforeach
-</ul>
-@endif
-
-<!-- 投稿表示エリア（編集するのはここ！） -->
-@isset($posts)
-@foreach ($posts as $post)
-<h2>{{ $post->user->name }}</h2>
-<h2>{{ $post->comment }}</h2>
-<div><img src="{{ asset('storage/' . $post->filename) }}" width=400></div>
-
-<!-- いいねする・取り消す　-->
-@if(Auth::user()->is_liked($post->id))
-    <form action="{{ url('likecancel') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="post_id" value={{$post->id}}>
-        <input type="hidden" name="_method" value="DELETE">
-        <button>いいね</button>     
-    </form>   
-@else
-    <form action="{{ url('likeadd') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="post_id" value={{$post->id}}>
-        <button>いいね</button>        
-    </form>
-@endif
-
-<!-- いいね数を表示する　-->
-<div>{{$post->countlike()}} </div>
-
-<!-- 記事を削除する　-->
-@if(Auth::id()==$post->user_id)
-    <form action="{{ url('posts/'.$post->id)}}" method="POST">
-        @csrf
-        <input type="hidden" name="post_id" value={{$post->id}}>
-        <input type="hidden" name="_method" value="DELETE">
-        <button>削除する</button>        
-    </form>
-@endif
-<br><hr>
-@endforeach
-@endisset
