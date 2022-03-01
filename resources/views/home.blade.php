@@ -23,7 +23,7 @@
                             @endif
                             </div>
                         </div>
-                        <div><img src="{{ asset('storage/' . $post->filename) }}" width=400></div>
+                        <div><img src="{{ asset('storage/' . $post->filename) }}" class="w-100"></div>
 
                         <div class="row">
                             <div class="col-10">{{ $post->comment }}</div>
