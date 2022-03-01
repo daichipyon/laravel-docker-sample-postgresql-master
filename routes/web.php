@@ -28,7 +28,7 @@ Route::post('/addthumb', 'AddthumbController@thumbUpdate');
 
 Route::name('post.')->group(function(){
     Route::get('/posts/new','PostController@postaddPage')->name('new');
-    Route::post('/posts', 'PostController@postAdd')->name('postadd');
+    Route::post('/posts', 'PostController@postAdd')->name('add');
     Route::delete('/posts/{post_id}','PostController@postDelete')->name('delete');    
 });
 
