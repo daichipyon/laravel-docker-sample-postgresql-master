@@ -4,9 +4,9 @@
     <!-- 投稿表示エリア（編集するのはここ！） -->
     @isset($posts)
     @foreach ($posts as $post)
-        <div class="container  my-4">
+        <div class="container my-4">
             <div class="d-flex justify-content-center">
-                <div class="card">
+                <div class="card" style="width: 25rem;">
                     <div class="card-body">
                         <div class="row">
                             <h5 class="card-title col-9">{{ $post->user->name }}</h2>
@@ -18,7 +18,7 @@
                                     @csrf
                                     <input type="hidden" name="post_id" value={{$post->id}}>
                                     <input type="hidden" name="_method" value="DELETE">
-                                    <button>削除する</button>        
+                                    <button class="btn btn-danger">削除</button>        
                                 </form>
                             @endif
                             </div>
@@ -31,23 +31,27 @@
                                 <!-- いいねする・取り消す　-->
                                 @if(Auth::check())
                                     @if(Auth::user()->is_liked($post->id))
-                                        <form action="{{ url('likecancel') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('like.cancel') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="post_id" value={{$post->id}}>
                                             <input type="hidden" name="_method" value="DELETE">
-                                            <button>⭐</button>                                        </form>   
+                                            <button class="btn btn-outline-light">⭐</button>                                        </form>   
                                     @else
-                                        <form action="{{ url('likeadd') }}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ route('like.add') }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="post_id" value={{$post->id}}>
-                                            <button>☆</button>        
+                                            <button class="btn btn-light">☆</button>        
                                         </form>
                                     @endif
                                 @endif
                             </div>
                         </div>
                         
-                        <div class="text-right"><a href="{{route('likeadd').'/'.$post->id}}">いいねしたユーザ</a></div>
+                        <div class="text-right">
+                            @if($post->is_liked())
+                                <a href="{{route('like.index',['post_id'=>$post->id])}}">いいねしたユーザ</a>
+                            @endif
+                        </div>
 
                     </div>
                 </div>

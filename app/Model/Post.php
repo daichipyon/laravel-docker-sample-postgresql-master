@@ -26,6 +26,10 @@ class Post extends Model
         return $this->belongsToMany(User::class,'likes','post_id','user_id')->withTimestamps();
     }
 
+    public function is_liked(){
+        return $this->likes()->count() >= 1;
+    }
+
     public function like_users(){
         return $this->likes()->all();
     }

@@ -32,9 +32,11 @@ Route::name('post.')->group(function(){
     Route::delete('/posts/{post_id}','PostController@postDelete')->name('delete');    
 });
 
-Route::post('/likeadd','LikeController@likeAdd')->name('likeadd');
-Route::delete('/likecancel','LikeController@likeCancel');
+Route::name('like.')->group(function(){
+    Route::post('/likeadd','LikeController@likeAdd')->name('add');
+    Route::delete('/likecancel','LikeController@likeCancel')->name('cancel');
+    Route::get('/likes/{post_id}','LikeController@index')->name('index');    
+});
 
-Route::get('/likes/{post_id}','LikeController@index');
 
-Route::get('/profile/{user_id}','UserController@index');
+Route::get('/profile/{user_id}','UserController@index')->name('profile');

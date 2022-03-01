@@ -39,7 +39,7 @@ class User extends Authenticatable
     ];
 
     public function posts(){
-        return $this->hasMany('App\Model\Post','user_id','id');
+        return $this->hasMany('App\Model\Post','user_id','id')->orderBy('created_at','ASC');
     }
 
     public function likes(){
@@ -68,5 +68,9 @@ class User extends Authenticatable
         else{
             return false;
         }
+    }
+    
+    public function liked_count(){
+        return $this->posts->flatMap->likes->count();
     }
 }

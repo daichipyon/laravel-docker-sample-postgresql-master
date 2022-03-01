@@ -1,73 +1,34 @@
 @extends('layouts.app')
 
-
-<h1>mail address is {{$user->email}}</h1>
-<!-- 投稿表示エリア（編集するのはここ！） -->
-@isset($posts)
-@foreach ($posts as $post)
-<h2>{{ $post->user->name }}</h2>
-<h2>{{ $post->comment }}</h2>
-<div><img src="{{ asset('storage/' . $post->filename) }}" width=400></div>
-
-<!-- いいねする・取り消す　-->
-@if(Auth::check() and Auth::user()->is_liked($post->id))
-    <form action="{{ url('likecancel') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="post_id" value={{$post->id}}>
-        <input type="hidden" name="_method" value="DELETE">
-        <button>いいね</button>     
-    </form>   
-@else
-    <form action="{{ url('likeadd') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="hidden" name="post_id" value={{$post->id}}>
-        <button>いいね</button>        
-    </form>
-@endif
-
-<!-- いいね数を表示する　-->
-<div>{{$post->countlike()}} </div>
-
-<!-- 記事を削除する　-->
-@if(Auth::check() and Auth::id()==$post->user_id)
-    <form action="{{ url('posts/'.$post->id)}}" method="POST">
-        @csrf
-        <input type="hidden" name="post_id" value={{$post->id}}>
-        <input type="hidden" name="_method" value="DELETE">
-        <button>削除する</button>        
-    </form>
-@endif
-<br><hr>
-@endforeach
-@endisset
-
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+    <div class='card  my-4 d-flex justify-content-center'>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <img src="{{ asset('storage/' . $user->filename) }}" class="w-100">
                 </div>
-            </div>
+                <div class="col-9">
+                    <h1>{{$user->name}}</h1>
+                    <div><strong>いいね数</strong> {{$user->liked_count()}}回</div>
+                </div>
+            </div>    
         </div>
     </div>
+    
+    <div class='card d-flex justify-content-center'>
+        <div class="card-body">
+            <div class="row">
+                @isset($posts)
+                @foreach ($posts as $post)
+                    <div class="col-4 mb-4">
+                        <img src="{{ asset('storage/' . $post->filename) }}" class="w-100">
+                    </div>
+                @endforeach
+                @endisset
+            </div>
+        </div>
+    </div>    
 </div>
-@endsection
 
-<!-- エラーメッセージ。なければ表示しない -->
-@if ($errors->any())
-<ul>
-    @foreach($errors->all() as $error)
-    <li>{{ $error }}</li>
-    @endforeach
-</ul>
-@endif
+@endsection

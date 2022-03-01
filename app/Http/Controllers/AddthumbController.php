@@ -55,6 +55,6 @@ class AddthumbController extends Controller
         $user->filename = $filename;
         $user->save();
 
-        return view('home');
+        return redirect('home');
     }    
 }
