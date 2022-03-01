@@ -9,7 +9,7 @@
                 <div class="card" style="width: 25rem;">
                     <div class="card-body">
                         <div class="row">
-                            <h5 class="card-title col-9">{{ $post->user->name }}</h2>
+                            <h5 class="card-title col-9"><a href="{{route('profile',['user_id'=>$post->user_id])}}">{{ $post->user->name }}</a></h2>
 
                             <!-- 記事を削除する　-->
                             <div class="col-3">
@@ -58,5 +58,8 @@
             </div>
         </div>
         @endforeach
+        <div class="d-flex justify-content-center">
+            {{$posts->links()}}
+        </div>
     @endisset
 @endsection
