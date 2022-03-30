@@ -49,6 +49,7 @@
                         
                         <div class="text-right">
                             @if($post->is_liked())
+                            <div><strong>{{$post->countlike()}}</strong>いいね</div>
                                 <a href="{{route('like.index',['post_id'=>$post->id])}}">いいねしたユーザ</a>
                             @endif
                         </div>
