@@ -13,7 +13,7 @@ Laravel5.8の開発用テンプレート
 $ cp .env.sample .env
 $ docker-compose build
 $ dokcer-compose up
-$ dokerr-compose exec app composer install
 $ docker-compose exec app php artisan key:generate
+$ docker-compose exec app php artisan migrate
 ```
 
